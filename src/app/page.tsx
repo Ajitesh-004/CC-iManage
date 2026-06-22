@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/ThemeProvider";
 import { ProgressBar } from "@/components/ProgressBar";
 import { OPERATION_META, getProgressMeta } from "@/lib/operations";
+import { getSampleCsv, getSampleCsvFilename } from "@/lib/operations/sampleHeaders";
 import { parseCsv } from "@/lib/csv/parse";
 import type { OperationLogEntry, OperationProgress, OperationStreamEvent } from "@/types";
 
@@ -223,6 +224,19 @@ export default function HomePage() {
     URL.revokeObjectURL(url);
   }
 
+  function downloadSample() {
+    if (!selectedOp) return;
+    const sample = getSampleCsv(selectedOp.id);
+    if (!sample) return;
+    const blob = new Blob([sample], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = getSampleCsvFilename(selectedOp.id);
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (!loggedIn) {
     return (
       <div className="login-wrap">
@@ -352,7 +366,19 @@ export default function HomePage() {
               </>
             ) : selectedOp.needsCsv ? (
               <div className="form-row">
-                <label>CSV content (paste or upload)</label>
+                <div className="label-row">
+                  <label>CSV content (paste or upload)</label>
+                  {getSampleCsv(selectedOp.id) && (
+                    <button
+                      type="button"
+                      className="btn-sample"
+                      onClick={downloadSample}
+                      title="Download a sample CSV with the required headers"
+                    >
+                      ↓ Download sample CSV
+                    </button>
+                  )}
+                </div>
                 <input
                   key={fileKey}
                   className="file-input"

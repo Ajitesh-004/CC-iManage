@@ -352,6 +352,29 @@ button:disabled {
   margin-bottom: 1rem;
 }
 
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn-sample {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.btn-sample:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
 .flex {
   display: flex;
   gap: 0.75rem;
